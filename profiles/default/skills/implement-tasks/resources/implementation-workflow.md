@@ -92,10 +92,10 @@ Mark completed items with [x]:
 - [ ] Implement validation  <- current
 ```
 
-### Update Amp Todos
-```
-todo_write: "TG1 Database Layer - COMPLETE"
-todo_write: "TG2 API Layer - IN PROGRESS"
+### Update Progress in tasks.md
+```markdown
+- [x] TG1 Database Layer - COMPLETE
+- [ ] TG2 API Layer - IN PROGRESS
 ```
 
 ---

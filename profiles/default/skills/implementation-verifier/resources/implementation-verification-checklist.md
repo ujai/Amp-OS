@@ -3,7 +3,7 @@
 ## 1. Task Completion (25 points)
 
 - [ ] **All Tasks Done** (15pts) - Every task in tasks.md marked complete
-- [ ] **Todo Sync** (5pts) - `todo_read` shows all items resolved
+- [ ] **Progress Tracked** (5pts) - tasks.md checkboxes reflect actual status
 - [ ] **No Skipped Items** (5pts) - Any skipped tasks documented with reason
 
 ## 2. Test Coverage (25 points)

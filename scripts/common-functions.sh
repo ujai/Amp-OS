@@ -128,7 +128,12 @@ get_skills_to_install() {
     if [[ "$(read_yaml_value "$config_file" "install_utility_skills")" != "false" ]]; then
         skills="$skills architecture-diagrams code-analysis"
     fi
-    
+
+    # Workflow skills (Jan 2026 update)
+    if [[ "$(read_yaml_value "$config_file" "install_workflow_skills")" != "false" ]]; then
+        skills="$skills brainstorm handoff workflow-orchestrator"
+    fi
+
     echo "$skills"
 }
 

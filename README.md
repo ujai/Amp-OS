@@ -59,7 +59,7 @@ chmod +x ~/Amp-OS/scripts/*.sh
 | **Standards** | Symlinked to `.claude/skills/` | Loaded via `instructions[]` |
 | **Agent Orchestration** | Native `Task` tool | oh-my-opencode agents |
 | **Planning/Review** | `oracle` skill | `@oracle` agent |
-| **Todo Management** | `todo_write`/`todo_read` | oh-my-opencode todos |
+| **Thread Management** | Handoffs + Thread mentions (`@@`) | Session-based |
 | **Semantic Search** | `finder` tool | `mgrep` tool |
 
 ---
@@ -69,8 +69,10 @@ chmod +x ~/Amp-OS/scripts/*.sh
 Both platforms follow the same spec-driven workflow:
 
 ```
-Plan Product → Shape Spec → Write Spec → Create Tasks → Implement → Verify
+[Brainstorm] → Plan Product → Shape Spec → Write Spec → Create Tasks → Implement → Verify
 ```
+
+> **New in Jan 2026:** Use `brainstorm` before planning to refine ideas through Socratic dialogue. Use `handoff` to transfer context between threads.
 
 | Phase | Purpose | Amp CLI Skill | OpenCode Command |
 |-------|---------|---------------|------------------|
@@ -306,11 +308,12 @@ your-project/
         └── ...
 ```
 
-### Available Skills (14)
+### Available Skills (17)
 
 | Category | Skills |
 |----------|--------|
 | **Phase** | `plan-product`, `shape-spec`, `write-spec`, `create-tasks`, `implement-tasks`, `verify-implementation` |
+| **Workflow** | `brainstorm`, `handoff`, `workflow-orchestrator` |
 | **Verifier** | `spec-verifier`, `implementation-verifier` |
 | **Standards** | `standards-global`, `standards-backend`, `standards-frontend`, `standards-testing` |
 | **Utility** | `architecture-diagrams`, `code-analysis` |
@@ -327,6 +330,48 @@ For large features, use the Task tool with agent templates:
 ```
 Task: "Implement Task Group 2 using the implementer agent template"
 ```
+
+---
+
+## Thread Patterns (Amp CLI)
+
+Amp-OS workflows are designed around Amp's thread management:
+
+### Hub-and-Spokes
+Best for: Feature development with multiple implementation tracks
+
+```
+         [Planning Hub]
+              │
+    ┌─────────┼─────────┐
+    │         │         │
+    ▼         ▼         ▼
+[Backend]  [Frontend]  [Tests]
+  Spoke      Spoke      Spoke
+```
+
+- **Hub**: Contains brainstorm, plan, spec (reference thread)
+- **Spokes**: Implementation threads (one per task group)
+- Use `@@planning-thread` to reference decisions from spokes
+
+### Chain Pattern
+Best for: Sequential workflows where each phase builds on previous
+
+```
+[Brainstorm] → handoff → [Plan] → handoff → [Implement] → handoff → [Verify]
+```
+
+- Short, focused threads
+- Handoff documents bridge context
+- Clean context at each phase
+
+### Best Practices
+
+1. **Keep threads short** - One task group or phase per thread
+2. **Use handoffs** - Don't let context fill up
+3. **Reference, don't repeat** - Use `@@` for cross-thread context
+4. **Subagents for parallel work** - Explicitly delegate independent tasks
+5. **Plan first, execute second** - Iterate plan until solid, then implement
 
 ---
 

@@ -50,14 +50,13 @@ Structure the roadmap with:
 ...
 ```
 
-### 4. Sync with Todo System
-- Use `todo_write` to create high-level milestone todos
-- Tag with `phase:planning`, `milestone:[name]`
+### 4. Track Progress
+- Update roadmap.md with milestones and status
+- Create handoffs if planning spans multiple sessions
 
 ## Amp Tools to Use
 - `oracle` - Strategic planning, risk analysis, prioritization
 - `finder` - Codebase exploration and feature discovery
-- `todo_write` - Milestone tracking
 - `mermaid` - Timeline/dependency visualization
 
 ## Output Expectations

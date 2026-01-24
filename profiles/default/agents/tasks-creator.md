@@ -114,14 +114,11 @@ flowchart TD
 [Any implementation notes or gotchas]
 ```
 
-### 4. Sync with Amp Todo System
-- Use `todo_write` to create todos for each task group
-- Tag with `spec:[feature-name]`, `phase:implementation`
-- Include dependencies in todo descriptions
+### 4. Track Progress
+- Update tasks.md checkboxes as work progresses
+- Use handoffs for long implementations
 
 ## Amp Tools to Use
-- `todo_write` - Sync tasks to Amp's todo system
-- `todo_read` - Check existing task status
 - `mermaid` - Create dependency graph
 - `finder` - Locate code areas for implementation
 
@@ -155,7 +152,6 @@ flowchart TD
 ## Output Expectations
 - Complete `tasks.md` following template
 - Dependency graph visualization
-- Todos synced to Amp system
 - Each group independently testable
 - Clear path from start to finish
 

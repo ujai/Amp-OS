@@ -120,10 +120,11 @@ Document the change:
 
 ## Communicating Changes
 
-### Update Todos
-```
-todo_write: "Roadmap updated - [feature] complete"
-todo_write: "Next: [next feature] - ready for spec shaping"
+### Update Roadmap
+```markdown
+# In roadmap.md:
+- [x] [feature] - COMPLETE
+- [ ] [next feature] - ready for spec shaping
 ```
 
 ### Notify Stakeholders

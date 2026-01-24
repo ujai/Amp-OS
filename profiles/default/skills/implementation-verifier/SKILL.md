@@ -20,7 +20,7 @@ Validate that implementation matches specification and all tasks are complete.
 2. **Gather Artifacts**
    - Read `amp-os/specs/[feature]/spec.md`
    - Read `amp-os/specs/[feature]/tasks.md`
-   - Use `todo_read` to check task completion status
+   - Check task checkboxes in tasks.md for completion status
 
 3. **Verify Each Category**
    - Task Completion
@@ -56,6 +56,5 @@ Validate that implementation matches specification and all tasks are complete.
 ```
 
 ## Amp Tools to Use
-- `todo_read` - Check task status
 - `Bash` - Run tests, lint, build
 - `finder` - Locate implementation files

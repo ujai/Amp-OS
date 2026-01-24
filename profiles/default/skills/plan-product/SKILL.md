@@ -27,8 +27,9 @@ Create a comprehensive product roadmap using spec-driven development.
    - Use template from [roadmap-template.md](resources/roadmap-template.md)
    - Save to `amp-os/product/roadmap.md`
 
-4. **Sync with Todo System**
-   - Use `todo_write` to create high-level milestones
+4. **Track Progress**
+   - Update roadmap.md with milestones and status
+   - Create handoff if planning spans multiple sessions
 
 ## Resources
 - [Roadmap Template](resources/roadmap-template.md)
@@ -36,5 +37,4 @@ Create a comprehensive product roadmap using spec-driven development.
 ## Amp Tools to Use
 - `oracle` - Strategic planning and risk analysis
 - `finder` - Codebase exploration
-- `todo_write` - Milestone tracking
 - `mermaid` - Timeline/dependency visualization

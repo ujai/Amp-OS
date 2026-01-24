@@ -108,8 +108,10 @@ install_amp_os() {
     # Create project directories
     log_info "Creating project structure..."
     ensure_dir "$PROJECT_DIR/.claude/skills"
+    ensure_dir "$PROJECT_DIR/.agents/skills"  # AGENTS.md standard (cross-tool compatible)
     ensure_dir "$PROJECT_DIR/amp-os/product"
     ensure_dir "$PROJECT_DIR/amp-os/specs"
+    ensure_dir "$PROJECT_DIR/amp-os/handoffs"  # Context transfer documents
     ensure_dir "$PROJECT_DIR/amp-os/templates"
     
     # Install skills
@@ -119,10 +121,14 @@ install_amp_os() {
     
     for skill in $skills; do
         local source_skill="$profile_dir/skills/$skill"
-        local dest_skill="$PROJECT_DIR/.claude/skills/amp-os-$skill"
-        
+        local dest_skill_claude="$PROJECT_DIR/.claude/skills/amp-os-$skill"
+        local dest_skill_agents="$PROJECT_DIR/.agents/skills/amp-os-$skill"
+
         if [[ -d "$source_skill" ]]; then
-            link_or_copy "$source_skill" "$dest_skill" "$USE_SYMLINKS"
+            # Install to .claude/skills/ (Claude Code compatible)
+            link_or_copy "$source_skill" "$dest_skill_claude" "$USE_SYMLINKS"
+            # Also install to .agents/skills/ (AGENTS.md standard for cross-tool compatibility)
+            link_or_copy "$source_skill" "$dest_skill_agents" "$USE_SYMLINKS"
         else
             log_warning "Skill not found: $skill"
         fi
@@ -236,7 +242,13 @@ EOF
     echo "Next steps:"
     echo "  1. Update amp-os/config.yml with your tech stack"
     echo "  2. Customize AGENTS.md with project-specific commands"
-    echo "  3. Start with: Load amp-os-plan-product skill"
+    echo "  3. Start with: Load amp-os-brainstorm skill (for new features)"
+    echo "     Or: Load amp-os-plan-product skill (to create roadmap)"
+    echo ""
+    echo "Thread management tips:"
+    echo "  - Use handoffs to transfer context between threads"
+    echo "  - Use @@ syntax to reference other threads"
+    echo "  - Keep threads short (one task group per thread)"
     echo ""
 }
 

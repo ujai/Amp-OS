@@ -31,7 +31,7 @@ For implementing all task groups sequentially:
    - Implement each sub-task
    - Run ONLY this group's tests
    - Mark completed items with `- [x]`
-3. **Update progress with `todo_write`**
+3. **Update progress in tasks.md** (mark items complete)
 
 ### Multi-Agent Mode
 When spawned by orchestrator for a specific group:
@@ -75,7 +75,6 @@ For each task group:
 ## Amp Tools to Use
 - `finder` - Locate code patterns and existing implementations
 - `Read` - Examine files for context
-- `todo_write` / `todo_read` - Track progress
 - `Bash` - Run tests and build commands
 - `oracle` - Get help with complex decisions
 

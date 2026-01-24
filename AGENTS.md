@@ -36,7 +36,7 @@ See: `docs/implementation-plan.md` for complete specification.
         └── templates/            # Document templates
 ```
 
-## Skills to Implement (14 total)
+## Skills (17 total)
 
 ### Phase Skills (6)
 1. `plan-product` - Product roadmap planning
@@ -46,19 +46,24 @@ See: `docs/implementation-plan.md` for complete specification.
 5. `implement-tasks` - Implementation workflow
 6. `verify-implementation` - Final verification
 
+### Workflow Skills (3) - NEW
+7. `brainstorm` - Socratic pre-planning before any implementation
+8. `handoff` - Context transfer between threads/sessions
+9. `workflow-orchestrator` - Chain skills for end-to-end workflows
+
 ### Verifier Skills (2)
-7. `spec-verifier` - Spec quality verification
-8. `implementation-verifier` - Implementation verification
+10. `spec-verifier` - Spec quality verification
+11. `implementation-verifier` - Implementation verification
 
 ### Standards Skills (4)
-9. `standards-global` - Global coding standards
-10. `standards-backend` - Backend standards
-11. `standards-frontend` - Frontend standards
-12. `standards-testing` - Testing standards
+12. `standards-global` - Global coding standards
+13. `standards-backend` - Backend standards
+14. `standards-frontend` - Frontend standards
+15. `standards-testing` - Testing standards
 
 ### Utility Skills (2)
-13. `architecture-diagrams` - Mermaid diagram generation
-14. `code-analysis` - Codebase analysis helper
+16. `architecture-diagrams` - Mermaid diagram generation
+17. `code-analysis` - Codebase analysis helper
 
 ## Agent Prompt Templates (7)
 
@@ -88,11 +93,18 @@ See: `docs/implementation-plan.md` for complete specification.
 ## Key Amp Tools to Leverage
 
 - `skill` - Load skills on demand (lazy loading)
-- `oracle` - Planning and review (o3 model)
-- `todo_write`/`todo_read` - Native task tracking
+- `oracle` - Planning and review
 - `finder` - Semantic code search
 - `mermaid` - Architecture diagrams
-- `Task` - Sub-agent orchestration
+- `Task` - Sub-agent orchestration with handoffs
+- `Librarian` - Documentation search subagent
+
+## Thread Management
+
+- Use **handoffs** for long tasks (extracts context to new thread)
+- Use **thread mentions (@@)** to pull context from other threads
+- Keep threads short and focused (one task per thread)
+- Use subagents explicitly for parallel work
 
 ## Code Style
 

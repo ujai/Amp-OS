@@ -18,7 +18,6 @@ Read these files:
 ### Step 1: Verify Tasks Completion
 - Read `amp-os/specs/[feature]/tasks.md`
 - Confirm ALL tasks marked `- [x]`
-- Use `todo_read` to verify Amp todos are complete
 - Flag any incomplete items
 
 ### Step 2: Run Full Test Suite
@@ -170,7 +169,6 @@ For complex features:
 
 ## Amp Tools to Use
 - `Bash` - Run test and build commands
-- `todo_read` - Verify task completion
 - `Read` - Examine implementation files
 - `finder` - Verify patterns followed
 - `oracle` - Deep implementation review
