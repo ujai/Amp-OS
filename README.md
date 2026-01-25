@@ -2,11 +2,44 @@
 
 > Spec-driven development workflows for AI coding assistants.
 
-A structured framework for planning, specification, implementation, and verification.
+## The Problem
 
-**Supports:**
-- **Amp CLI** (Sourcegraph) — uses skills-based lazy loading
-- **OpenCode** (SST) — uses slash commands + oh-my-opencode
+AI coding assistants are powerful, but they have issues:
+
+1. **They jump straight to code.** No planning, no spec, just code. This leads to rework and missed requirements.
+
+2. **Context gets messy.** Long sessions fill up with noise. The AI forgets what you decided earlier.
+
+3. **No structure.** Every project is chaos. No consistent way to plan features, track tasks, or verify work.
+
+4. **Different tools, different workflows.** Amp CLI works one way. OpenCode works another. You have to learn each from scratch.
+
+## The Solution
+
+Amp-OS gives you a **repeatable workflow** that works across tools:
+
+```
+Brainstorm → Plan → Spec → Tasks → Implement → Verify
+```
+
+Each phase has a dedicated skill/command that:
+- Asks the right questions
+- Produces standard documents
+- Keeps context clean
+- Enforces quality checks
+
+**Result:** You get working code that matches what you actually wanted.
+
+---
+
+## Supported Platforms
+
+| Platform | How it works |
+|----------|--------------|
+| **[Amp CLI](https://ampcode.com)** (Sourcegraph) | Skills loaded on demand |
+| **[OpenCode](https://opencode.ai)** (SST) | Slash commands via oh-my-opencode |
+
+---
 
 ## Installation
 
@@ -16,7 +49,7 @@ A structured framework for planning, specification, implementation, and verifica
 curl -fsSL https://raw.githubusercontent.com/korallis/Amp-OS/main/install.sh | bash
 ```
 
-You'll be prompted to choose your platform (Amp CLI or OpenCode).
+You'll pick your platform (Amp CLI or OpenCode).
 
 ### Manual install
 
@@ -29,364 +62,126 @@ chmod +x ~/Amp-OS/scripts/*.sh
 
 ## Quick Start
 
-### For Amp CLI
+### Amp CLI
 
 ```bash
-# Install into a project
+# Add to your project
 ~/Amp-OS/scripts/amp-project-install.sh /path/to/your-project
 
-# Then in Amp, load skills:
+# In Amp, load a skill:
 "Load amp-os-plan-product to create a roadmap"
 ```
 
-### For OpenCode
+### OpenCode
 
 ```bash
-# Requires oh-my-opencode plugin first (see below)
+# Requires oh-my-opencode first (see OpenCode Setup below)
 ~/Amp-OS/scripts/opencode-project-install.sh /path/to/your-project
 
-# Then in OpenCode, use slash commands:
+# In OpenCode, use slash commands:
 /plan-product
 ```
 
 ---
 
-## Platform Comparison
+## The Workflow
 
-| Feature | Amp CLI | OpenCode |
-|---------|---------|----------|
-| **Context Loading** | Skills (lazy-loaded) | Slash commands |
-| **Standards** | Symlinked to `.claude/skills/` | Loaded via `instructions[]` |
-| **Agent Orchestration** | Native `Task` tool | oh-my-opencode agents |
-| **Planning/Review** | `oracle` skill | `@oracle` agent |
-| **Thread Management** | Handoffs + Thread mentions (`@@`) | Session-based |
-| **Semantic Search** | `finder` tool | `mgrep` tool |
+Both platforms use the same phases:
 
----
-
-## Workflow
-
-Both platforms follow the same spec-driven workflow:
-
-```
-[Brainstorm] → Plan Product → Shape Spec → Write Spec → Create Tasks → Implement → Verify
-```
-
-> **New in Jan 2026:** Use `brainstorm` before planning to refine ideas through Socratic dialogue. Use `handoff` to transfer context between threads.
-
-| Phase | Purpose | Amp CLI Skill | OpenCode Command |
-|-------|---------|---------------|------------------|
-| **Plan** | Define roadmap and milestones | `amp-os-plan-product` | `/plan-product` |
+| Phase | What it does | Amp CLI | OpenCode |
+|-------|--------------|---------|----------|
+| **Brainstorm** | Refine vague ideas into clear designs | `amp-os-brainstorm` | - |
+| **Plan** | Create roadmap with milestones | `amp-os-plan-product` | `/plan-product` |
 | **Shape** | Research requirements | `amp-os-shape-spec` | `/shape-spec` |
-| **Write** | Create specification | `amp-os-write-spec` | `/write-spec` |
-| **Tasks** | Break into task groups | `amp-os-create-tasks` | `/create-tasks` |
-| **Implement** | TDD implementation | `amp-os-implement-tasks` | `/implement` |
-| **Verify** | Final verification | `amp-os-verify-implementation` | `/verify` |
+| **Write** | Write detailed specification | `amp-os-write-spec` | `/write-spec` |
+| **Tasks** | Break spec into task groups | `amp-os-create-tasks` | `/create-tasks` |
+| **Implement** | Build with tests first (TDD) | `amp-os-implement-tasks` | `/implement` |
+| **Verify** | Check everything works | `amp-os-verify-implementation` | `/verify` |
 
 ---
 
-## Workflow Examples
+## Examples
 
-### Greenfield Project (Starting Fresh)
+### New Project
 
-When building a new product from scratch, follow the full workflow.
+Building something from scratch? Use the full workflow.
 
-**Example: Building a SaaS invoicing app**
-
-<details>
-<summary><strong>Amp CLI Version</strong></summary>
-
-```bash
-# 1. Install Amp-OS
-~/Amp-OS/scripts/amp-project-install.sh ~/projects/invoice-app
-cd ~/projects/invoice-app && amp
-```
+**Example: SaaS invoicing app**
 
 ```
-# 2. Plan the product (creates roadmap.md)
-"Load amp-os-plan-product skill. Build a SaaS invoicing application with:
-- User authentication (email + OAuth)
-- Invoice creation and management  
-- Stripe payment integration
-- PDF export
-- Client portal"
-
-# 3. Shape the first feature
-"Load amp-os-shape-spec skill for user-auth feature"
-# → Researches auth patterns, creates requirements.md
-
-# 4. Write the specification
-"Load amp-os-write-spec skill for user-auth"
-# → Creates detailed spec.md with API contracts, data models
-
-# 5. Verify spec quality before implementation
-"Load amp-os-spec-verifier skill for user-auth"
-# → Oracle reviews for completeness, flags gaps
-
-# 6. Break into tasks
-"Load amp-os-create-tasks skill for user-auth"
-# → Creates tasks.md with task groups
-
-# 7. Implement (TDD approach)
-"Load amp-os-implement-tasks skill for user-auth"
-# → Implements each task group with tests first
-
-# 8. Final verification
-"Load amp-os-verify-implementation skill for user-auth"
-# → Runs tests, updates roadmap, generates report
+1. Plan the product     → Creates roadmap.md with milestones
+2. Shape "user-auth"    → Researches auth patterns, creates requirements
+3. Write spec           → Detailed spec with API contracts, data models
+4. Create tasks         → Breaks into implementable chunks
+5. Implement            → TDD: tests first, then code
+6. Verify               → Runs tests, generates report
 ```
 
-</details>
+### Existing Project
 
-<details>
-<summary><strong>OpenCode Version</strong></summary>
-
-```bash
-# 1. Install Amp-OS
-~/Amp-OS/scripts/opencode-project-install.sh ~/projects/invoice-app
-cd ~/projects/invoice-app && opencode
-```
+Adding a feature to existing code? Skip planning, start with shaping.
 
 ```
-# 2. Plan the product (creates roadmap.md)
-/plan-product Build a SaaS invoicing application with:
-- User authentication (email + OAuth)
-- Invoice creation and management
-- Stripe payment integration
-- PDF export
-- Client portal
-
-# 3. Shape the first feature
-/shape-spec user-auth
-# → Researches auth patterns, creates requirements.md
-
-# 4. Write the specification
-/write-spec user-auth
-# → Creates detailed spec.md with API contracts, data models
-
-# 5. Verify spec quality before implementation
-/verify-spec user-auth
-# → Oracle reviews for completeness, flags gaps
-
-# 6. Break into tasks
-/create-tasks user-auth
-# → Creates tasks.md with task groups
-
-# 7. Implement (TDD approach)
-/implement user-auth
-# → Implements each task group with tests first
-
-# 8. Final verification
-/verify user-auth
-# → Runs tests, updates roadmap, generates report
+1. Shape "stripe-billing"  → Analyzes existing patterns
+2. Write spec              → References current code
+3. Create tasks            → Small, non-breaking changes
+4. Implement               → Follows existing conventions
+5. Verify                  → No regressions
 ```
-
-</details>
-
-**Greenfield Tips:**
-- Start with product planning to establish vision and milestones
-- Tackle features in dependency order (auth → core → integrations)
-- Each feature gets its own spec directory
-- Verify specs before writing code
-
----
-
-### Brownfield Project (Existing Codebase)
-
-When adding features to an existing project, adapt the workflow.
-
-**Example: Adding Stripe billing to an existing app**
-
-<details>
-<summary><strong>Amp CLI Version</strong></summary>
-
-```bash
-# 1. Install Amp-OS into existing project
-~/Amp-OS/scripts/amp-project-install.sh ~/projects/my-existing-app
-cd ~/projects/my-existing-app && amp
-```
-
-```
-# 2. Skip product planning, go straight to feature shaping
-"Load amp-os-shape-spec skill for stripe-billing feature"
-# → Analyzes existing code patterns, identifies integration points
-
-# 3. Write spec with existing code context
-"Load amp-os-write-spec skill for stripe-billing"
-# → References existing models, follows established patterns
-
-# 4. Create tasks respecting current architecture
-"Load amp-os-create-tasks skill for stripe-billing"
-# → Breaks work into incremental, non-breaking changes
-
-# 5. Implement incrementally
-"Load amp-os-implement-tasks skill for stripe-billing"
-# → Follows existing conventions, adds tests
-
-# 6. Verify integration
-"Load amp-os-verify-implementation skill for stripe-billing"
-# → Ensures no regressions, all tests pass
-```
-
-</details>
-
-<details>
-<summary><strong>OpenCode Version</strong></summary>
-
-```bash
-# 1. Install Amp-OS into existing project
-~/Amp-OS/scripts/opencode-project-install.sh ~/projects/my-existing-app
-cd ~/projects/my-existing-app && opencode
-```
-
-```
-# 2. Skip product planning, go straight to feature shaping
-/shape-spec stripe-billing
-# → Analyzes existing code patterns, identifies integration points
-
-# 3. Write spec with existing code context
-/write-spec stripe-billing
-# → References existing models, follows established patterns
-
-# 4. Create tasks respecting current architecture  
-/create-tasks stripe-billing
-# → Breaks work into incremental, non-breaking changes
-
-# 5. Implement incrementally
-/implement stripe-billing
-# → Follows existing conventions, adds tests
-
-# 6. Verify integration
-/verify stripe-billing
-# → Ensures no regressions, all tests pass
-```
-
-</details>
-
-**Brownfield Tips:**
-- Skip product planning unless restructuring the whole project
-- Use shape-spec to analyze existing patterns first
-- Reference existing code in your spec prompts
-- Implement in smaller increments to avoid breaking changes
-- Run existing tests frequently during implementation
-
----
 
 ### Quick Reference
 
-| Scenario | Amp CLI Skills | OpenCode Commands |
-|----------|----------------|-------------------|
-| **New product** | `plan-product` → `shape-spec` → `write-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/plan-product` → `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
-| **New feature** | `shape-spec` → `write-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/shape-spec` → `/write-spec` → `/create-tasks` → `/implement` → `/verify` |
-| **Bug fix** | Load `standards-*` skills, fix directly | Fix directly (standards auto-loaded) |
-| **Refactoring** | `shape-spec` → `create-tasks` → `implement-tasks` → `verify-implementation` | `/shape-spec` → `/create-tasks` → `/implement` → `/verify` |
-| **Spike/research** | `shape-spec` only | `/shape-spec` only |
+| Scenario | Start at |
+|----------|----------|
+| New product | `plan-product` |
+| New feature | `shape-spec` |
+| Bug fix | Just fix it (load standards first) |
+| Refactoring | `shape-spec` |
+| Research only | `shape-spec` |
 
 ---
 
-## Amp CLI Setup
+## What Gets Installed
 
-### Project Structure After Install
+After running the installer, your project gets:
 
 ```
 your-project/
-├── AGENTS.md                    # Project context
-├── amp-os/
-│   ├── config.yml              # Project settings
+├── AGENTS.md              # Project context for AI
+├── amp-os/                # (or opencode-os/)
+│   ├── config.yml         # Project settings
 │   ├── product/
-│   │   └── roadmap.md          # Product roadmap
-│   ├── specs/                  # Feature specifications
+│   │   └── roadmap.md     # Your product roadmap
+│   ├── specs/             # Feature specs go here
 │   │   └── [feature]/
 │   │       ├── spec.md
-│   │       ├── tasks.md
-│   │       └── planning/
-│   └── templates/              # Document templates
+│   │       └── tasks.md
+│   └── templates/         # Document templates
 └── .claude/
-    └── skills/                 # Symlinked skills
-        ├── amp-os-plan-product/
-        ├── amp-os-write-spec/
-        └── ...
-```
-
-### Available Skills (17)
-
-| Category | Skills |
-|----------|--------|
-| **Phase** | `plan-product`, `shape-spec`, `write-spec`, `create-tasks`, `implement-tasks`, `verify-implementation` |
-| **Workflow** | `brainstorm`, `handoff`, `workflow-orchestrator` |
-| **Verifier** | `spec-verifier`, `implementation-verifier` |
-| **Standards** | `standards-global`, `standards-backend`, `standards-frontend`, `standards-testing` |
-| **Utility** | `architecture-diagrams`, `code-analysis` |
-
-### Usage
-
-```
-"Load the amp-os-plan-product skill to create a roadmap"
-"Use amp-os-write-spec to create a specification for user authentication"
-"Apply amp-os-standards-backend when implementing the API"
-```
-
-For large features, use the Task tool with agent templates:
-```
-Task: "Implement Task Group 2 using the implementer agent template"
+    └── skills/            # Symlinked skills (Amp CLI)
 ```
 
 ---
 
-## Thread Patterns (Amp CLI)
+## Available Skills (Amp CLI)
 
-Amp-OS workflows are designed around Amp's thread management:
+| Category | Skills |
+|----------|--------|
+| **Workflow** | `brainstorm`, `plan-product`, `shape-spec`, `write-spec`, `create-tasks`, `implement-tasks`, `verify-implementation` |
+| **Quality** | `spec-verifier`, `implementation-verifier` |
+| **Standards** | `standards-global`, `standards-backend`, `standards-frontend`, `standards-testing` |
+| **Utility** | `architecture-diagrams`, `code-analysis`, `handoff`, `workflow-orchestrator` |
 
-### Hub-and-Spokes
-Best for: Feature development with multiple implementation tracks
-
+Load any skill by asking Amp:
 ```
-         [Planning Hub]
-              │
-    ┌─────────┼─────────┐
-    │         │         │
-    ▼         ▼         ▼
-[Backend]  [Frontend]  [Tests]
-  Spoke      Spoke      Spoke
+"Load amp-os-write-spec for the payment feature"
 ```
-
-- **Hub**: Contains brainstorm, plan, spec (reference thread)
-- **Spokes**: Implementation threads (one per task group)
-- Use `@@planning-thread` to reference decisions from spokes
-
-### Chain Pattern
-Best for: Sequential workflows where each phase builds on previous
-
-```
-[Brainstorm] → handoff → [Plan] → handoff → [Implement] → handoff → [Verify]
-```
-
-- Short, focused threads
-- Handoff documents bridge context
-- Clean context at each phase
-
-### Best Practices
-
-1. **Keep threads short** - One task group or phase per thread
-2. **Use handoffs** - Don't let context fill up
-3. **Reference, don't repeat** - Use `@@` for cross-thread context
-4. **Subagents for parallel work** - Explicitly delegate independent tasks
-5. **Plan first, execute second** - Iterate plan until solid, then implement
 
 ---
 
 ## OpenCode Setup
 
-### Prerequisites
-
-**oh-my-opencode is REQUIRED** for the OpenCode version. It provides:
-- Async background agents (oracle, librarian, explore)
-- Claude Code compatibility layer
-- LSP/AST tools
-- Todo management and enforcement
-- Curated MCPs (context7, exa, grep.app)
-
-Install oh-my-opencode:
+OpenCode requires **oh-my-opencode** plugin first:
 
 ```bash
 # Add to ~/.config/opencode/opencode.json:
@@ -398,95 +193,71 @@ opencode
 
 See: [oh-my-opencode documentation](https://github.com/code-yeongyu/oh-my-opencode)
 
-### Project Structure After Install
-
-```
-your-project/
-├── AGENTS.md                    # Project context
-├── .opencode/
-│   ├── opencode.json           # OpenCode config
-│   └── command/                # Workflow commands
-│       ├── plan-product.md
-│       ├── shape-spec.md
-│       ├── write-spec.md
-│       └── ...
-├── .claude/
-│   └── rules/                  # Conditional rules (optional)
-└── opencode-os/
-    ├── config.yml              # Project settings
-    ├── product/
-    │   └── roadmap.md          # Product roadmap
-    ├── specs/                  # Feature specifications
-    ├── standards/              # Coding standards
-    │   ├── global.md
-    │   ├── backend.md
-    │   ├── frontend.md
-    │   └── testing.md
-    └── templates/              # Document templates
-```
-
 ### Available Commands
 
-| Command | Purpose | Agent Used |
-|---------|---------|------------|
-| `/plan-product` | Strategic planning | oracle |
-| `/shape-spec` | Research requirements | librarian |
-| `/write-spec` | Write specification | document-writer |
-| `/create-tasks` | Break spec into tasks | - |
-| `/implement` | TDD implementation | - |
-| `/verify` | Final verification | oracle |
-| `/verify-spec` | Spec quality check | oracle |
-| `/task-status` | Task progress | - |
+| Command | Purpose |
+|---------|---------|
+| `/plan-product` | Create product roadmap |
+| `/shape-spec` | Research requirements |
+| `/write-spec` | Write specification |
+| `/create-tasks` | Break into tasks |
+| `/implement` | TDD implementation |
+| `/verify` | Final verification |
+| `/verify-spec` | Check spec quality |
+| `/task-status` | Show progress |
 
-### Usage
+---
 
+## Thread Management (Amp CLI)
+
+Long sessions get messy. Keep things clean:
+
+1. **One task per thread.** Start a new thread for each task group.
+2. **Use handoffs.** The `handoff` skill creates a summary to pass to the next thread.
+3. **Reference, don't repeat.** Use `@@thread-name` to pull context from other threads.
+
+**Hub-and-Spokes Pattern:**
+```
+       [Planning Thread]
+              │
+    ┌─────────┼─────────┐
+    ▼         ▼         ▼
+[Backend]  [Frontend]  [Tests]
+```
+
+---
+
+## Updating
+
+### Symlinked installs (default)
+
+Skills update automatically when you pull:
 ```bash
-# In your project
-cd /path/to/your-project
-opencode
-
-# Use slash commands
-/plan-product
-/shape-spec user-authentication
-/implement
+cd ~/Amp-OS && git pull
 ```
 
-### Invoking Agents Directly
+### Copied installs
 
-oh-my-opencode provides several agents you can invoke:
-
-```
-@oracle      - Deep reasoning, architecture decisions
-@librarian   - External documentation, OSS examples
-@explore     - Internal codebase search
-@frontend-ui-ux-engineer - UI/UX implementation
-@document-writer - Documentation tasks
+Re-run the installer:
+```bash
+~/Amp-OS/scripts/amp-project-update.sh /path/to/project
 ```
 
 ---
 
 ## Configuration
 
-### Master Config (`~/Amp-OS/config.yml`)
+### Master config (`~/Amp-OS/config.yml`)
 
 ```yaml
-version: 1.0.0
-use_symlinks: true        # Symlink skills (true) or copy (false)
-profile: default          # Profile for Amp CLI
-
-# Skill categories (Amp only)
-install_phase_skills: true
-install_verifier_skills: true
-install_standards_skills: true
-install_utility_skills: true
+version: 2.0.0
+profile: default
+use_symlinks: true        # false = copy files instead
 ```
 
-### Project Config
+### Project config (`amp-os/config.yml`)
 
-**Amp CLI** (`project/amp-os/config.yml`):
 ```yaml
-version: 1.0.0
-profile: default
 project_name: "My Project"
 tech_stack: ["node", "react", "postgres"]
 standards:
@@ -496,92 +267,13 @@ standards:
   testing: true
 ```
 
-**OpenCode** (`project/opencode-os/config.yml`):
-```yaml
-version: 1.0.0
-profile: opencode
-project_name: "My Project"
-platform: opencode
-standards:
-  global: true
-  backend: true
-  frontend: true
-  testing: true
-features:
-  oh_my_opencode: true
-```
-
----
-
-## Updating
-
-### Amp CLI
-```bash
-# Symlinked installs update automatically when you pull
-cd ~/Amp-OS && git pull
-
-# For copied installs:
-~/Amp-OS/scripts/amp-project-update.sh /path/to/project
-```
-
-### OpenCode
-```bash
-# Pull latest
-cd ~/Amp-OS && git pull
-
-# Re-run installer to update commands (--copy mode only)
-~/Amp-OS/scripts/opencode-project-install.sh /path/to/project
-```
-
----
-
-## Key Benefits
-
-| Feature | Description |
-|---------|-------------|
-| **Spec-Driven** | Plan before code, verify after |
-| **Platform Agnostic** | Same workflow on Amp CLI or OpenCode |
-| **Lazy Loading** | Context loads only when needed |
-| **Standards Enforced** | Consistent coding across features |
-| **Multi-Agent** | Orchestrate specialized agents |
-| **Templates** | Reusable spec/task/verification templates |
-
----
-
-## Repository Structure
-
-```
-~/Amp-OS/
-├── install.sh                    # Unified installer
-├── config.yml                    # Master config
-├── README.md                     # This file
-├── AGENTS.md                     # Development instructions
-├── scripts/
-│   ├── amp-project-install.sh    # Amp CLI project installer
-│   ├── amp-project-update.sh     # Amp CLI updater
-│   ├── opencode-project-install.sh # OpenCode project installer
-│   ├── create-profile.sh         # Create new profiles
-│   └── common-functions.sh       # Shared utilities
-└── profiles/
-    ├── default/                  # Amp CLI profile
-    │   ├── skills/               # 14 SKILL directories
-    │   ├── agents/               # Agent templates
-    │   ├── standards/            # Standards files
-    │   └── templates/            # Document templates
-    └── opencode/                 # OpenCode profile
-        ├── commands/             # 8 workflow commands
-        ├── standards/            # 4 standards files
-        ├── templates/            # Document templates
-        └── rules/                # Conditional rules
-```
-
 ---
 
 ## Credits
 
-- [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) by code-yeongyu
 - [Amp CLI](https://ampcode.com) by Sourcegraph
 - [OpenCode](https://opencode.ai) by SST
+- [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) by code-yeongyu
 
 ## License
 
