@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-REPO="korallis/Amp-OS"
+REPO="ujai/Amp-OS"
 INSTALL_DIR="${AMP_OS_HOME:-$HOME/Amp-OS}"
 BRANCH="${AMP_OS_BRANCH:-main}"
 PLATFORM=""

@@ -46,7 +46,7 @@ Each phase has a dedicated skill/command that:
 ### One-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/korallis/Amp-OS/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ujai/Amp-OS/main/install.sh | bash
 ```
 
 You'll pick your platform (Amp CLI or OpenCode).
@@ -54,7 +54,7 @@ You'll pick your platform (Amp CLI or OpenCode).
 ### Manual install
 
 ```bash
-git clone https://github.com/korallis/Amp-OS.git ~/Amp-OS
+git clone https://github.com/ujai/Amp-OS.git ~/Amp-OS
 chmod +x ~/Amp-OS/scripts/*.sh
 ```
 
